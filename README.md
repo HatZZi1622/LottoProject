@@ -1,0 +1,2 @@
+# LottoProject
+Lotto
