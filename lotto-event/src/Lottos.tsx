@@ -1,6 +1,6 @@
 import "./App.css";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface IMember {
   name: string;
@@ -20,16 +20,46 @@ function App() {
   const [winnerNumber, setWinnerNumber] = useState<number>(1);
   const [isWinners, setIsWinners] = useState([""]);
 
+  // let nameList: string[] = isMembers.map((data: any) =>
+  //   nameList.push(JSON.parse(JSON.stringify(data.name)))
+  // );
   let nameList: string[] = JSON.parse(JSON.stringify(isMembers)).map(
     (data: any) => data.name
   );
 
   const membersNum = Object.keys(isMembers).length;
 
-  const handlePushMember = (memberName: any) => {
-    setNewMember((prev) => (prev.name = memberName));
-    setIsMembers((isMembers: any[]) => [isMembers, newMember]);
+  // useEffect(() => {
+  //   setNewMember((prev) => {
+  //     return { ...prev, name: memberName };
+  //   });
+  // }, [memberName]);
+
+  const handlePushMember = () => {
+    // setNewMember((prev) => {
+    //   return { ...prev, name: memberName };
+    // });\
+    setNewMember((prev) => {
+      return { ...prev, name: memberName };
+    });
+    setIsMembers([...isMembers, { name: memberName, win_number: 0 }]);
+    console.log(newMember);
+    // membersNum === 0
+    //   ? setIsMembers((isMembers: any[]) => [isMembers, newMember])
+    //   : isMembers.push(newMember);
+    console.log(isMembers);
+    console.log(nameList);
   };
+
+  // useEffect(() => {
+  //   membersNum === 0
+  //     ? setIsMembers((isMembers: any[]) => [isMembers, newMember])
+  //     : isMembers.push(newMember);
+  // }, [newMember]);
+
+  // useEffect(() => {
+  //   setIsMembers(() => isMembers.push(newMember));
+  // }, [newMember]);
   //   const handlePushMember = (memberName: any) => {
   //     if (membersNum - Object.keys(colorchip).length + 1 < 0) {
   //       setNewMember((prev) => (prev.name = memberName));
@@ -78,6 +108,7 @@ function App() {
   // const selectMoreWinners = (e) => {
 
   // }
+
   return (
     <BackGround>
       <NameInput>
@@ -86,14 +117,12 @@ function App() {
           value={memberName}
           onChange={(e) => setIsMemberName(e.target.value)}
         ></Input>
-        <AddButton onClick={() => handlePushMember(memberName)}>
-          추가하기
-        </AddButton>
+        <AddButton onClick={() => handlePushMember()}>추가하기</AddButton>
       </NameInput>
-      {nameList == null
+      {isMembers == null
         ? ""
-        : nameList.map((v) => {
-            return <MemberNames>{v}</MemberNames>;
+        : isMembers.map((v: any) => {
+            return <MemberNames>{v.name}</MemberNames>;
           })}
     </BackGround>
   );
