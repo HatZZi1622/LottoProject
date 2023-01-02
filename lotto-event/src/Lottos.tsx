@@ -15,40 +15,16 @@ const defaultMember = { name: "", sign_number: 0, win_number: 0 };
 function App() {
   const [memberName, setIsMemberName] = useState("");
   const [isMessage, setIsMessage] = useState("");
-  const [newMember, setNewMember] = useState<IMember>(defaultMember);
   const [isMembers, setIsMembers] = useState<any>([]);
   const [winnerNumber, setWinnerNumber] = useState<number>(1);
   const [isWinners, setIsWinners] = useState([""]);
 
-  // let nameList: string[] = isMembers.map((data: any) =>
-  //   nameList.push(JSON.parse(JSON.stringify(data.name)))
-  // );
-  let nameList: string[] = JSON.parse(JSON.stringify(isMembers)).map(
-    (data: any) => data.name
-  );
-
   const membersNum = Object.keys(isMembers).length;
 
-  // useEffect(() => {
-  //   setNewMember((prev) => {
-  //     return { ...prev, name: memberName };
-  //   });
-  // }, [memberName]);
-
   const handlePushMember = () => {
-    // setNewMember((prev) => {
-    //   return { ...prev, name: memberName };
-    // });\
-    setNewMember((prev) => {
-      return { ...prev, name: memberName };
-    });
     setIsMembers([...isMembers, { name: memberName, win_number: 0 }]);
-    console.log(newMember);
-    // membersNum === 0
-    //   ? setIsMembers((isMembers: any[]) => [isMembers, newMember])
-    //   : isMembers.push(newMember);
+
     console.log(isMembers);
-    console.log(nameList);
   };
 
   // useEffect(() => {
