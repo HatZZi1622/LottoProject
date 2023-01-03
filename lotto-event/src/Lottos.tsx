@@ -14,7 +14,7 @@ const colorchip: any[] = ["", "", ""];
 const defaultMember = { name: "", sign_number: 0, win_number: 0 };
 function App() {
   const [memberName, setIsMemberName] = useState("");
-  const [isMessage, setIsMessage] = useState("");
+  const [settingNum, setSettingNum] = useState<number>(1);
   const [isMembers, setIsMembers] = useState<any>([]);
   const [winnerNumber, setWinnerNumber] = useState<number>(1);
   const [isWinners, setIsWinners] = useState([""]);
@@ -55,30 +55,23 @@ function App() {
   //     setIsMembers((isMembers: any) => [isMembers, newMember]);
   //   };
 
-  const handleSetNumber = (e: number) => {
-    if (e < membersNum) {
-      if (e > 0) {
-        setWinnerNumber(e);
-      } else {
-        setIsMessage("1명 이상의 수를 넣어주세요!");
-        e = 1;
-      }
-    } else {
-      setIsMessage("당첨자 수는 참가자 이상의 수가 될 수 없습니다!");
-      e = membersNum - 1;
-    }
+  const handleSetNumber = (settingNum: number) => {
+    setWinnerNumber(settingNum);
   };
+
   const handleSelectWinners = () => {
     let i = 0;
-    let nList = [0];
+    let nList = [-1];
     while (i < winnerNumber) {
-      let n = Math.floor(Math.random() * membersNum) + 1;
+      let n = Math.floor(Math.random() * membersNum);
       if (!nList.find((e) => e === n)) {
         isMembers[n].win_number++;
-        isWinners.push(isMembers[n]);
+        setIsWinners([...isWinners, isMembers[n].name]);
+        // isWinners.push(isMembers[n]);
         i++;
       }
     }
+    console.log(isWinners);
   };
 
   // const selectMoreWinners = (e) => {
@@ -93,11 +86,34 @@ function App() {
           value={memberName}
           onChange={(e) => setIsMemberName(e.target.value)}
         ></Input>
-        <AddButton onClick={() => handlePushMember()}>추가하기</AddButton>
+        <AddButton
+          onClick={() => {
+            handlePushMember();
+            setIsMemberName("");
+          }}
+        >
+          추가하기
+        </AddButton>
+        <Input
+          type="number"
+          min={1}
+          max={membersNum - 1}
+          value={settingNum}
+          onChange={(e) => {
+            setSettingNum(parseInt(e.target.value));
+            handleSetNumber(settingNum);
+          }}
+        ></Input>
       </NameInput>
       {isMembers == null
         ? ""
         : isMembers.map((v: any) => {
+            return <MemberNames>{v.name}</MemberNames>;
+          })}
+      <SelectButton onClick={() => handleSelectWinners()}>돌리기</SelectButton>
+      {isWinners == null
+        ? ""
+        : isWinners.map((v: any) => {
             return <MemberNames>{v.name}</MemberNames>;
           })}
     </BackGround>
@@ -141,5 +157,6 @@ const Input = styled.input`
 `;
 
 const AddButton = styled.button``;
+const SelectButton = styled.button``;
 
 export default App;
