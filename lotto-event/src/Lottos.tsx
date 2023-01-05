@@ -17,7 +17,7 @@ function App() {
   const [settingNum, setSettingNum] = useState<number>(1);
   const [isMembers, setIsMembers] = useState<any>([]);
   const [winnerNumber, setWinnerNumber] = useState<number>(1);
-  const [isWinners, setIsWinners] = useState([""]);
+  const [isWinners, setIsWinners] = useState<any>([]);
 
   const membersNum = Object.keys(isMembers).length;
 
@@ -62,16 +62,18 @@ function App() {
   const handleSelectWinners = () => {
     let i = 0;
     let nList = [-1];
-    while (i < winnerNumber) {
+    while (i < winnerNumber + 1) {
       let n = Math.floor(Math.random() * membersNum);
       if (!nList.find((e) => e === n)) {
         isMembers[n].win_number++;
-        setIsWinners([...isWinners, isMembers[n].name]);
-        // isWinners.push(isMembers[n]);
+        // setIsWinners([...isWinners, isMembers[n].name]);
+        nList.push(n);
+        isWinners.push(isMembers[n].name);
         i++;
       }
     }
     console.log(isWinners);
+    console.log(nList);
   };
 
   // const selectMoreWinners = (e) => {
