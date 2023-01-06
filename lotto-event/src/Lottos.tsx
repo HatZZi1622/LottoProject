@@ -61,24 +61,21 @@ function App() {
 
   const handleSelectWinners = () => {
     let i = 0;
-    let nList = [-1];
+    const pushName: string[] = [];
     while (i < winnerNumber + 1) {
       let n = Math.floor(Math.random() * membersNum);
-      if (!nList.find((e) => e === n)) {
-        isMembers[n].win_number++;
-        // setIsWinners([...isWinners, isMembers[n].name]);
-        nList.push(n);
-        isWinners.push(isMembers[n].name);
+
+      if (!pushName.find((e: any) => e === isMembers[n].name)) {
+        pushName.push(isMembers[n].name);
         i++;
-      }
+      } else continue;
     }
-    console.log(isWinners);
-    console.log(nList);
+    setIsWinners(pushName);
   };
 
-  // const selectMoreWinners = (e) => {
-
-  // }
+  useEffect(() => {
+    console.log(isWinners);
+  }, [isWinners]);
 
   return (
     <BackGround>
@@ -116,7 +113,7 @@ function App() {
       {isWinners == null
         ? ""
         : isWinners.map((v: any) => {
-            return <MemberNames>{v.name}</MemberNames>;
+            return <MemberNames>{v}</MemberNames>;
           })}
     </BackGround>
   );
