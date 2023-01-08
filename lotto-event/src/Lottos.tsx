@@ -20,18 +20,13 @@ function App() {
   const [isWinners, setIsWinners] = useState<any>([]);
 
   const membersNum = Object.keys(isMembers).length;
+  const pushName: string[] = [];
 
   const handlePushMember = () => {
     setIsMembers([...isMembers, { name: memberName, win_number: 0 }]);
 
     console.log(isMembers);
   };
-
-  // useEffect(() => {
-  //   membersNum === 0
-  //     ? setIsMembers((isMembers: any[]) => [isMembers, newMember])
-  //     : isMembers.push(newMember);
-  // }, [newMember]);
 
   // useEffect(() => {
   //   setIsMembers(() => isMembers.push(newMember));
@@ -61,12 +56,33 @@ function App() {
 
   const handleSelectWinners = () => {
     let i = 0;
-    const pushName: string[] = [];
     while (i < winnerNumber + 1) {
       let n = Math.floor(Math.random() * membersNum);
-
+      console.log(isMembers[n].name);
       if (!pushName.find((e: any) => e === isMembers[n].name)) {
         pushName.push(isMembers[n].name);
+        i++;
+      } else continue;
+    }
+    setIsWinners(pushName);
+  };
+
+  const handleMoreSelect = () => {
+    const nonWinners: any[] = [];
+
+    for (let i = 0; i < membersNum; i++) {
+      if (isWinners.find((e: any) => e.name === isMembers[i])) {
+        continue;
+      } else {
+        nonWinners.push(isMembers[i]);
+      }
+    }
+
+    let i = 0;
+    while (i < winnerNumber + 1) {
+      let n = Math.floor(Math.random() * nonWinners.length);
+      if (!isWinners.find((e: any) => e.name === nonWinners[n].name)) {
+        pushName.push(nonWinners[n].name);
         i++;
       } else continue;
     }
@@ -109,7 +125,11 @@ function App() {
         : isMembers.map((v: any) => {
             return <MemberNames>{v.name}</MemberNames>;
           })}
-      <SelectButton onClick={() => handleSelectWinners()}>돌리기</SelectButton>
+      <SelectButton
+        onClick={() => (isWinners ? handleMoreSelect() : handleSelectWinners())}
+      >
+        돌리기
+      </SelectButton>
       {isWinners == null
         ? ""
         : isWinners.map((v: any) => {
